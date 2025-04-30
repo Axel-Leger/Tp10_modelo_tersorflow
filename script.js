@@ -1,7 +1,6 @@
 let modelo;
 
 async function entrenarModelo() {
-  // 1. Crear modelo secuencial
   modelo = tf.sequential();
   modelo.add(tf.layers.dense({ units: 1, inputShape: [1] }));
 
@@ -10,24 +9,24 @@ async function entrenarModelo() {
     optimizer: 'sgd'
   });
 
-  // 2. Crear los datos de entrenamiento
-  const x = tf.tensor2d([-6, -5, -4, -3, -2, -1, 0, 1, 2], [9, 1]);
-  const y = tf.tensor2d([-6, -4, -2, 0, 2, 4, 6, 8, 10.3], [9, 1]); // y = 2x + 6
+  const x = tf.tensor2d([-9 ,-8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], [21, 1]);
+  const y = tf.tensor2d([-12 ,-10, -8 ,-6, -4, -2, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28], [21, 1]);
 
-  // 3. Entrenar el modelo
+
   await modelo.fit(x, y, {
-    epochs: 350,
+    epochs: 400,
     callbacks: {
       onEpochEnd: (epoch, logs) => {
-        console.log(`Época ${epoch + 1}: pérdida = ${logs.loss.toFixed(4)}`);
+        console.log(`Época ${epoch +1}: pérdida = ${logs.loss.toFixed(4)}`);
       },
       onTrainEnd: () => {
-        document.getElementById("estado").innerText = "✅ Modelo entrenado y listo para usar";
         document.getElementById("prediccion").style.display = "block";
       }
     }
   });
 }
+
+entrenarModelo();
 
 function predecir() {
   const input = parseFloat(document.getElementById("inputX").value);
@@ -40,5 +39,4 @@ function predecir() {
   });
 }
 
-// Iniciar el entrenamiento al cargar
-entrenarModelo();
+
